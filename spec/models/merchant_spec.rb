@@ -75,5 +75,33 @@ describe Merchant, type: :model do
         expect(item.active?).to eq(true)
       end
     end
+
+    it "#merch_quantity" do
+      chain = @meg.items.create(name: "Chain", description: "It'll never break!", price: 40, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 22)
+      @user = User.create!(name: "Tanya", address: "145 Uvula dr", city: "Lake", state: "Michigan", zip: 80203, email: "tot@example.com", password: "password", role: 0)
+      allow_any_instance_of(ApplicationController).to receive(:user).and_return(@user)
+      order_1 = @user.orders.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033)
+      item_order = order_1.item_orders.create!(item: chain, price: chain.price, quantity: 2)
+
+      expect(@meg.merch_quantity(order_1.id)).to eq(2)
+    end
+
+    it "#merch_total" do
+      chain = @meg.items.create(name: "Chain", description: "It'll never break!", price: 40, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 22)
+      @user = User.create!(name: "Tanya", address: "145 Uvula dr", city: "Lake", state: "Michigan", zip: 80203, email: "tot@example.com", password: "password", role: 0)
+      allow_any_instance_of(ApplicationController).to receive(:user).and_return(@user)
+      order_1 = @user.orders.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033)
+      item_order = order_1.item_orders.create!(item: chain, price: chain.price, quantity: 2)
+      expect(@meg.merch_total(order_1.id)).to eq(80.0)
+    end
+
+    it "#orders" do
+      chain = @meg.items.create(name: "Chain", description: "It'll never break!", price: 40, image: "https://www.rei.com/media/4e1f5b05-27ef-4267-bb9a-14e35935f218?size=784x588", inventory: 22)
+      @user = User.create!(name: "Tanya", address: "145 Uvula dr", city: "Lake", state: "Michigan", zip: 80203, email: "tot@example.com", password: "password", role: 0)
+      allow_any_instance_of(ApplicationController).to receive(:user).and_return(@user)
+      order_1 = @user.orders.create!(name: 'Meg', address: '123 Stang Ave', city: 'Hershey', state: 'PA', zip: 17033)
+      item_order = order_1.item_orders.create!(item: chain, price: chain.price, quantity: 2)
+      expect(@meg.orders(@meg.id)).to eq([order_1])
+    end
   end
 end
