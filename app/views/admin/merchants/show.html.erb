@@ -1,0 +1,14 @@
+<%= @merchant.name %>
+<%= @merchant.address %>
+<%= @merchant.city %>
+<%= @merchant.state %>
+<%= @merchant.zip %>
+
+<%= link_to "My Items", "/admin/merchants/#{@merchant.id}/items" %>
+
+<% @merchant.orders(@merchant.id).each do |order| %>
+<%= link_to "Order ID##{order.id}", "/merchant/orders/#{order.id}"%>
+Order placed at: <%= order.created_at %>
+Total number of items: <%= @merchant.merch_quantity(order.id) %>
+Grand Total: <%= @merchant.merch_total(order.id) %>
+<% end %>

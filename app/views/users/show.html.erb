@@ -1,0 +1,10 @@
+<h1>Welcome, <%= @user.name %></h1>
+
+<p>Email: <%= @user.email %></p>
+<p>Address: <%= @user.address %></p>
+<p>City: <%= @user.city %></p>
+<p>State: <%= @user.state %></p>
+<p>Zip: <%= @user.zip %></p>
+<p><%= link_to "Edit Profile", "/profile/edit" %></p>
+<p><%= link_to "Edit Password", "/profile/password_edit" %></p>
+<p><%= link_to "My Orders", "/profile/orders" %></p>

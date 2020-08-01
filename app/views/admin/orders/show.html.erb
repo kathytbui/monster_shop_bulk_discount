@@ -1,0 +1,23 @@
+<h1>Order: <%= @order.id %></h1>
+
+<h3>Shipping Information</h3>
+<p>Name: <%= @order.name %></p>
+<p>Address: <%= @order.address %></p>
+<p>City: <%= @order.city %></p>
+<p>State: <%= @order.state %></p>
+<p>Zip: <%= @order.zip %></p>
+
+<h3>Item Information</h3>
+<% @order.item_orders.each do |item_order| %>
+<section class="item-<%= item_order.item.id %>">
+  <p><%= link_to item_order.item.name, "/merchant/items/#{item_order.item.id}" %></p>
+  <%= image_tag item_order.item.image, alt: "#{item_order.item.name} photo" %>
+  <p>Price: <%= number_to_currency(item_order.price) %></p>
+  <p>Quantity: <%= item_order.quantity %></p>
+  <p>Status: <%= item_order.status %></p>
+  <% if item_order.pending? && item_order.item.enough_inventory?(item_order.quantity)%>
+  <% elsif !item_order.item.enough_inventory?(item_order.quantity) %>
+    <p>Inventory too low to fulfill order</p>
+  <% end %>
+</section>
+<% end %>

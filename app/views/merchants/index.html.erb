@@ -1,0 +1,14 @@
+<h1 align = "center">Merchants</h1>
+<section class = "grid-container">
+  <% @merchants.each do |merchant|%>
+    <% if user_admin? %>
+      <h2><%= link_to merchant.name, "/admin/merchants/#{merchant.id}" %></h2>
+    <% else %>
+    <section class = "grid-item">
+      <h2><%=link_to merchant.name, "/merchants/#{merchant.id}"%></h2>
+    </section>
+    <% end %>
+  <% end %>
+</section><br>
+
+<h3 align="center"><%= link_to "New Merchant", "/merchants/new" %></h3>

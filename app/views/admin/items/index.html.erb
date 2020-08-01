@@ -1,0 +1,22 @@
+All Merchant's Items
+
+<% @items.each do |item| %>
+  <section class="items-<%= item.id %>">
+    <%= item.name %>
+    <%= item.description %>
+    <%= item.price %>
+    <%= image_tag(item.image, alt: "image-#{item.name}") %>
+    <% if item.active? %>
+      active
+      <%= button_to "deactivate", "/admin/items/#{item.id}/toggle", method: :patch %>
+    <% elsif !item.active? %>
+      inactive
+      <%= button_to "activate", "/admin/items/#{item.id}/toggle", method: :patch %>
+    <% end %>
+    <%= item.inventory %>
+    <%= link_to "edit", "/admin/merchants/#{item.merchant.id}/items/#{item.id}/edit" %>
+    <%= button_to "delete", "/admin/items/#{item.id}", method: :delete %>
+  </section>
+<% end %>
+
+<%= link_to "Add New Item", "/admin/merchants/#{@merchant.id}/items/new" %>

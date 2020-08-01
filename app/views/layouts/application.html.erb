@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monster Shop</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+    <nav class = "topnav">
+      <%= link_to "Monster Shop", "/" %>
+      <%= link_to "All Merchants", "/merchants"%>
+      <%= link_to "All Items", "/items"%>
+
+      <% if user.nil? %>
+      <%= link_to "Cart: #{cart.total_items}", "/cart" %>
+      <%= link_to "Register", "/register" %>
+      <%= link_to "Log in", "/login" %>
+
+      <% elsif user.default? %>
+      <%= link_to "Cart: #{cart.total_items}", "/cart" %>
+      <%= link_to "My Profile", "/profile" %>
+      <%= link_to "Log Out", "/logout", method: :delete %>
+      <p class = "user-name">You are logged in as <%= user.name %></p>
+
+      <% elsif user.merchant? %>
+      <%= link_to "Cart: #{cart.total_items}", "/cart" %>
+      <%= link_to "My Dashboard", "/merchant/dashboard" %>
+      <%= link_to "Log Out", "/logout", method: :delete %>
+
+      <% elsif user.admin? %>
+      <%= link_to "Log Out", "/logout", method: :delete %>
+      <%= link_to "My Dashboard", "/admin/dashboard" %>
+      <%= link_to "All Users", "/admin/users" %>
+      <%= link_to "Merchant Access", "/admin/merchants" %>
+
+      <% end %>
+
+    </nav>
+
+    <% flash.each do |name, msg| %>
+      <div class= "<%=name%>-flash">
+        <p><%= msg %></p>
+      </div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

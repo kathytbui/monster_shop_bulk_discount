@@ -1,0 +1,30 @@
+<h1>All Merchant's Items</h1>
+
+<section class="grid-container">
+
+<% @items.each do |item| %>
+  <section class="items-<%= item.id %>">
+    <section class = "grid-item">
+    <h2><%= link_to item.name, "/merchant/items/#{item.id}" %></h2>
+    <p><%= item.description %></p>
+    <p><%= item.price %></p>
+    <%= image_tag(item.image, alt: "image-#{item.name}") %>
+    <% if item.active? %>
+      <p>Status: active</p>
+    <% elsif !item.active? %>
+      <p>Status: inactive<p>
+    <% end %>
+    <p>Inventory: <%= item.inventory %></p>
+    <p><%= link_to "edit", "/merchant/items/#{item.id}/edit" %></p>
+  </section><br>
+  <% if item.active? %>
+    <center><%= button_to "deactivate", "/merchant/items/#{item.id}/toggle", method: :patch %></center>
+  <% elsif !item.active? %>
+    <center><%= button_to "activate", "/merchant/items/#{item.id}/toggle", method: :patch %></center>
+  <% end %>
+  <center><%= button_to "delete", "/merchant/items/#{item.id}", method: :delete %></center>
+  </section>
+<% end %>
+</section>
+
+<h2><center><%= link_to "Add New Item", "/merchant/items/new" %></center></h2>

@@ -1,0 +1,14 @@
+<h1>All Registered Users</h1>
+
+<section class = "grid-container">
+
+<% @users.each do |user| %>
+  <section class="user-<%= user.id %>">
+    <section class = "grid-item">
+      <p>User Name: <%= link_to user.name, "/admin/users/#{user.id}" %> </p>
+      <p>Account Created at: <%= user.created_at %></p>
+      <p>Account Type: <%= user.role %></p>
+    </section>
+  </section>
+<% end %>
+</section>

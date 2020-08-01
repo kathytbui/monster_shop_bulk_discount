@@ -1,0 +1,53 @@
+<h1>Your Dashboard</h1>
+
+<h2>Packaged:</h2>
+<p><%= "None at this time" if @orders.packaged.empty? %>
+<section class = "grid-container">
+<% @orders.packaged.each do |order| %>
+
+<section class = "grid-item">
+  <p>Name: <%= link_to order.name, "/admin/orders/#{order.id}" %></p>
+  <p>Order Id: <%= order.id%></p>
+  <p>Created At: <%= order.created_at %></p>
+  <%= link_to "Ship Order", "/admin/dashboard?id=#{order.id}", method: :patch %>
+<% end %>
+</section>
+
+<h2>Pending:</h2>
+<p><%= "None at this time" if @orders.pending.empty? %>
+<section class = "grid-container">
+
+<% @orders.pending.each do |order| %>
+
+<section class = "grid-item">
+  <p>Name: <%= link_to order.name, "/admin/orders/#{order.id}" %></p>
+  <p>Order Id: <%= order.id%></p>
+  <p>Created At: <%= order.created_at %></p>
+  </section>
+<% end %>
+</section>
+
+
+<h2>Shipped:</h2>
+<p><%= "None at this time" if @orders.shipped.empty? %>
+<section class = "grid-container">
+<% @orders.shipped.each do |order| %>
+<section class = "grid-item">
+  <p>Name: <%= link_to order.name, "/admin/orders/#{order.id}" %></p>
+  <p>Order Id: <%= order.id%></p>
+  <p>Created At: <%= order.created_at %></p>
+</section>
+<% end %>
+</section>
+
+<h2>Cancelled:</h2>
+<p><%= "None at this time" if @orders.cancelled.empty? %>
+<section class = "grid-container">
+<% @orders.cancelled.each do |order| %>
+<section class = "grid-item">
+  <p>Name: <%= link_to order.name, "/admin/orders/#{order.id}" %></p>
+  <p>Order Id: <%= order.id%></p>
+  <p>Created At: <%= order.created_at %></p>
+</section>
+<% end %>
+</section>

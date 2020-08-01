@@ -1,0 +1,16 @@
+Add a New Item
+
+<%= form_tag "/admin/merchants/#{@merchant.id}/items", method: :post do %>
+  <%= label_tag :name %>
+  <%= text_field_tag :name, @user_input[:name] %>
+  <%= label_tag :description %>
+  <%= text_field_tag :description, @user_input[:description] %>
+  <%= label_tag :price %>
+  <%= text_field_tag :price, @user_input[:price] %>
+  <%= label_tag :image %>
+  <%= text_field_tag :image %>
+  <%= label_tag :inventory %>
+  <%= text_field_tag :inventory, @user_input[:inventory] %>
+
+  <%= submit_tag "Submit" %>
+<% end %>

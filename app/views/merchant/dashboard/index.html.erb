@@ -1,0 +1,15 @@
+<h1><%= @merchant.name %></h1>
+  <p class="address"><%= @merchant.address %></p>
+  <p class="address"><%= @merchant.city %>, <%= @merchant.state %> <%= @merchant.zip %></p>
+  <center>
+
+<h3><%= link_to "My Items", "/merchant/items" %><h3><br>
+
+<h2>My Orders</h2>
+<% @merchant.orders(@merchant.id).each do |order| %>
+  <h3><%= link_to "Order ID##{order.id}", "/merchant/orders/#{order.id}"%></h3>
+  <p>Order placed at: <%= order.created_at %></p>
+  <p>Total number of items: <%= @merchant.merch_quantity(order.id) %></p>
+  <p>Grand Total: <%= number_to_currency(@merchant.merch_total(order.id)) %></p><br>
+<% end %>
+<center>
