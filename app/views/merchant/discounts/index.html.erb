@@ -3,18 +3,22 @@
 <center>
 <p><%= link_to "Add New Discount", "/merchant/discounts/new" %></p>
 
-<% @items.each do |item| %>
-<section class="item_discounts-<%= item.id %>">
-  <% if !item.item_discounts.empty? %>
-    <%= item.name %><br>
-    Original Price: <%= number_to_currency(item.price) %><br>
-    <% item.item_discounts.uniq.each do |item_discount| %>
-    Discount Amount Required: <%= item_discount.discount.quantity %><br>
-    Discount Percentage: <%= item_discount.discount.percentage * 100 %>%<br>
-    Discounted Price per Item: <%= number_to_currency(item.discounted_price(item_discount)) %><br>
-    <%= link_to "Edit Discount", "/merchant/item_discounts/#{item_discount.id}/edit" %>
-    <%= link_to "Delete Discount", "/merchant/item_discounts/#{item_discount.id}", method: :delete %>
-    <% end %>
+<section class="grid-container">
+  <% @items.each do |item| %>
+    <section class="item_discounts-<%= item.id %>">
+      <% if !item.item_discounts.empty? %>
+        <h3><%= item.name %></h3>
+        <h4>Original Price: <%= number_to_currency(item.price) %></h4>
+        <% item.item_discounts.uniq.each do |item_discount| %>
+          <p>Discount Amount Required: <%= item_discount.discount.quantity %></p>
+          <p>Discount Percentage: <%= item_discount.discount.percentage * 100 %>%</p>
+          <p>Discounted Price per Item: <%= number_to_currency(item.discounted_price(item_discount)) %></p>
+          <p><%= link_to "Edit Discount", "/merchant/item_discounts/#{item_discount.id}/edit" %>
+          <%= link_to "Delete Discount", "/merchant/item_discounts/#{item_discount.id}", method: :delete %></p>
+          <br>
+          <br>
+        <% end %>
+      <% end %>
+    </section>
   <% end %>
 </section>
-<% end %>
