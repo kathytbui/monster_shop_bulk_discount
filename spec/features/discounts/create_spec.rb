@@ -109,7 +109,7 @@ RSpec.describe "Discount New Page" do
       expect(page).to have_content("Total: $45.00")
     end
 
-    it "can order bulk discount" do
+    it "can order bulk discount with higher discount" do
       visit "/items/#{@pull_toy.id}"
       expect(page).to have_content("Buy #{@discount.quantity} to get #{@discount.percentage * 100}% off!")
       expect(page).to have_content("Buy #{@discount_1.quantity} to get #{@discount_1.percentage * 100}% off!")
@@ -120,7 +120,7 @@ RSpec.describe "Discount New Page" do
       expect(page).to have_content("Total: $80.00")
     end
 
-    it "can order bulk discount" do
+    it "can order bulk discount with higher discount and additional items do not count" do
       visit "/items/#{@pull_toy.id}"
       expect(page).to have_content("Buy #{@discount.quantity} to get #{@discount.percentage * 100}% off!")
       expect(page).to have_content("Buy #{@discount_1.quantity} to get #{@discount_1.percentage * 100}% off!")
@@ -129,6 +129,13 @@ RSpec.describe "Discount New Page" do
       fill_in :quantity, with: 11
       click_on "Update Quantity"
       expect(page).to have_content("Total: $90.00")
+    end
+
+    it "can order bulk discount with higher discount and additional items do not count" do
+      order_1 = @user.orders.create(name: "John", address: "124 Lickit dr", city: "Denver", state: "Colorado", zip: 80890)
+      ItemOrder.create(item: @pull_toy, order: order_1, quantity: 11, price: 10)
+      visit "/orders/#{order_1.id}"
+      expect(page).to have_content("$90.00")
     end
   end
 end

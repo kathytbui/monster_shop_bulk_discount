@@ -1,16 +1,17 @@
-All Discounts
+<h1>All Discounts</h1>
 
-<%= link_to "Add New Discount", "/merchant/discounts/new" %>
+<center>
+<p><%= link_to "Add New Discount", "/merchant/discounts/new" %></p>
 
 <% @items.each do |item| %>
 <section class="item_discounts-<%= item.id %>">
   <% if !item.item_discounts.empty? %>
-    <%= item.name %>
-    Original Price: <%= number_to_currency(item.price) %>
+    <%= item.name %><br>
+    Original Price: <%= number_to_currency(item.price) %><br>
     <% item.item_discounts.uniq.each do |item_discount| %>
-    Discount Amount Required: <%= item_discount.discount.quantity %>
-    Discount Percentage: <%= item_discount.discount.percentage * 100 %>%
-    Discounted Price per Item: <%= number_to_currency(item.discounted_price(item_discount)) %>
+    Discount Amount Required: <%= item_discount.discount.quantity %><br>
+    Discount Percentage: <%= item_discount.discount.percentage * 100 %>%<br>
+    Discounted Price per Item: <%= number_to_currency(item.discounted_price(item_discount)) %><br>
     <%= link_to "Edit Discount", "/merchant/item_discounts/#{item_discount.id}/edit" %>
     <%= link_to "Delete Discount", "/merchant/item_discounts/#{item_discount.id}", method: :delete %>
     <% end %>

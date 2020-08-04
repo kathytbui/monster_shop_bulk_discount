@@ -15,7 +15,7 @@ RSpec.describe "Merchant Order Show Page" do
     visit "/admin/merchants/#{@user_1.merchant.id}"
     expect(page).to have_content("Order placed at: #{@order.created_at}")
     expect(page).to have_content("Total number of items: #{@order.total_quantity }")
-    expect(page).to have_content("Grand Total: #{@order.grandtotal}")
+    expect(page).to have_content("Grand Total: $#{@order.grandtotal}.00")
     click_on "Order ID##{@order.id}"
     expect(current_path).to eq("/merchant/orders/#{@order.id}")
   end
