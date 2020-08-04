@@ -29,6 +29,7 @@
       <%= link_to "Cart: #{cart.total_items}", "/cart" %>
       <%= link_to "My Dashboard", "/merchant/dashboard" %>
       <%= link_to "Log Out", "/logout", method: :delete %>
+      <%= link_to "Manage My Discounts", "/merchant/discounts" %>
 
       <% elsif user.admin? %>
       <%= link_to "Log Out", "/logout", method: :delete %>

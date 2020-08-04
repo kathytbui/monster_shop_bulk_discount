@@ -51,6 +51,13 @@ class Merchant <ApplicationRecord
     item_orders.where("order_id = #{order_id}").sum('item_orders.price * item_orders.quantity')
   end
 
+  def merchant_item_orders_total(order_id)
+    item_orders.where("order_id = #{order_id}").reduce(0) do |acc, io|
+      acc += io.discounted_subtotal
+      acc
+    end
+  end
+
   private
 
   def set_status

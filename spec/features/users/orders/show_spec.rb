@@ -10,80 +10,81 @@ RSpec.describe "User Orders Index page" do
 
     @user = User.create!(name: "Tanya", address: "145 Uvula dr", city: "Lake", state: "Michigan", zip: 80203, email: "tot@example.com", password: "password", role: 0)
     @order_1 = @user.orders.create(name: "John", address: "124 Lickit dr", city: "Denver", state: "Colorado", zip: 80890)
-    @order_2 = @user.orders.create(name: "John", address: "124 Lickit dr", city: "Denver", state: "Colorado", zip: 80890)
+    @order_3 = @user.orders.create(name: "John", address: "124 Lickit dr", city: "Denver", state: "Colorado", zip: 80890)
+
+    @discount = Discount.create!(quantity: 5, percentage: 0.1)
+    ItemDiscount.create(item: @paper, discount: @discount)
+    ItemDiscount.create(item: @pencil, discount: @discount)
 
     @item_order1 = ItemOrder.create!(order: @order_1, item: @paper, price: 20, quantity: 1)
     @item_order2 = ItemOrder.create!(order: @order_1, item: @pencil, price: 2, quantity: 2)
-    @item_order3 = ItemOrder.create!(order: @order_2, item: @paper, price: 20, quantity: 3)
-
+    ItemOrder.create!(order: @order_3, item: @pencil, price: 2, quantity: 5)
+    ItemOrder.create!(order: @order_3, item: @paper, price: 20, quantity: 5)
 
     allow_any_instance_of(ApplicationController).to receive(:user).and_return(@user)
   end
-    it "I visit my Profile Orders page I can click on a link for order's show page" do
-      visit "/profile/orders"
 
-      expect(page).to have_link(@order_1.id)
-      click_link "#{@order_1.id}"
-      expect(current_path).to eq("/profile/orders/#{@order_1.id}")
-    end
-    it "displays all information about the order" do
-      visit "/profile/orders/#{@order_1.id}"
+  it "I visit my Profile Orders page I can click on a link for order's show page" do
+    visit "/profile/orders"
+    expect(page).to have_link(@order_1.id)
+    click_link "#{@order_1.id}"
+    expect(current_path).to eq("/profile/orders/#{@order_1.id}")
+  end
 
-      expect(page).to have_content(@order_1.id)
-      expect(page).to have_content(@order_1.created_at)
-      expect(page).to have_content(@order_1.updated_at)
-      expect(page).to have_content(@order_1.status)
-      expect(page).to have_content(@order_1.total_quantity)
-      expect(page).to have_content(@order_1.grandtotal)
+  it "displays all information about the order" do
+    visit "/profile/orders/#{@order_1.id}"
+    expect(page).to have_content(@order_1.id)
+    expect(page).to have_content(@order_1.created_at)
+    expect(page).to have_content(@order_1.updated_at)
+    expect(page).to have_content(@order_1.status)
+    expect(page).to have_content(@order_1.total_quantity)
+    expect(page).to have_content(@order_1.grandtotal)
 
-      within "#item-#{@paper.id}" do
-        expect(page).to have_content(@paper.name)
-        expect(page).to have_content(@paper.description)
-        expect(page).to have_content("1")
-        expect(page).to have_content(@paper.price)
-        expect(page).to have_content(@item_order1.subtotal)
-        expect(page).to have_css("img[src*='#{@paper.image}']")
-      end
-
-      within "#item-#{@pencil.id}" do
-        expect(page).to have_content(@pencil.name)
-        expect(page).to have_content(@pencil.description)
-        expect(page).to have_content("2")
-        expect(page).to have_content(@pencil.price)
-        expect(page).to have_content(@item_order2.subtotal)
-        expect(page).to have_css("img[src*='#{@pencil.image}']")
-      end
-    end
-    it "allows user to cancel an order" do
-      visit "/profile/orders/#{@order_1.id}"
-
-      expect(page).to have_link("Cancel Order")
-
-      click_on "Cancel Order"
-
-      expect(current_path).to eq("/profile/orders")
-
-      expect(page).to have_content("Your order is cancelled")
-
-      within ".order-#{@order_1.id}" do
-        expect(page).to have_content("cancelled")
-      end
-
-      expect(@order_1.status).to eq("cancelled")
-
-      @order_1.item_orders.each do |item_order|
-        expect(item_order.status).to eq("unfulfilled")
-      end
-      # - Any item quantities in the order that were previously fulfilled have their quantities returned to their respective merchant's inventory for that item.
+    within "#item-#{@paper.id}" do
+      expect(page).to have_content(@paper.name)
+      expect(page).to have_content(@paper.description)
+      expect(page).to have_content("1")
+      expect(page).to have_content(@paper.price)
+      expect(page).to have_content(@item_order1.subtotal)
+      expect(page).to have_css("img[src*='#{@paper.image}']")
     end
 
-    it "will show packaged if all items are fulfilled" do
-      @item_order1.update(status: 3)
-      @item_order2.update(status: 3)
-      visit "/profile/orders/#{@order_1.id}"
-      click_on "Update Order"
-
-      expect(page).to have_content("packaged")
+    within "#item-#{@pencil.id}" do
+      expect(page).to have_content(@pencil.name)
+      expect(page).to have_content(@pencil.description)
+      expect(page).to have_content("2")
+      expect(page).to have_content(@pencil.price)
+      expect(page).to have_content(@item_order2.subtotal)
+      expect(page).to have_css("img[src*='#{@pencil.image}']")
     end
+  end
+  it "allows user to cancel an order" do
+    visit "/profile/orders/#{@order_1.id}"
+    expect(page).to have_link("Cancel Order")
+    click_on "Cancel Order"
+    expect(current_path).to eq("/profile/orders")
+    expect(page).to have_content("Your order is cancelled")
+    within ".order-#{@order_1.id}" do
+      expect(page).to have_content("cancelled")
+    end
+    expect(@order_1.status).to eq("cancelled")
+    @order_1.item_orders.each do |item_order|
+      expect(item_order.status).to eq("unfulfilled")
+    end
+    # - Any item quantities in the order that were previously fulfilled have their quantities returned to their respective merchant's inventory for that item.
+  end
 
+  it "will show packaged if all items are fulfilled" do
+    @item_order1.update(status: 3)
+    @item_order2.update(status: 3)
+    visit "/profile/orders/#{@order_1.id}"
+    click_on "Update Order"
+    expect(page).to have_content("packaged")
+  end
+
+  it "shows discounted prices on orders show" do
+    visit "/profile/orders/#{@order_3.id}"
+    expect(page).to have_content("$9.00")
+    expect(page).to have_content("$90.00")
+  end
 end

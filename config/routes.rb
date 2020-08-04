@@ -84,5 +84,11 @@ Rails.application.routes.draw do
     get "/items/:item_id/edit", to: 'items#edit'
     patch "/items/:item_id", to: 'items#update'
     patch "/items/:item_order_id/fulfill", to: "fulfill#update"
+    get "/discounts", to: 'discounts#index'
+    get "/discounts/new", to: 'discounts#new'
+    post "/discounts", to: 'discounts#create'
+    get "/item_discounts/:id/edit", to: 'item_discounts#edit'
+    patch "/item_discounts/:id", to: 'item_discounts#update'
+    delete "/item_discounts/:id", to: 'item_discounts#destroy'
   end
 end

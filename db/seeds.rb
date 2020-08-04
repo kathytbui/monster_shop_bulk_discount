@@ -11,6 +11,8 @@ Item.destroy_all
 User.destroy_all
 Order.destroy_all
 ItemOrder.destroy_all
+Discount.destroy_all
+ItemDiscount.destroy_all
 
 #users
 john = User.create(name: "John", address: "145 Uvula dr", city: "Lake", state: "Michigan", zip: 80203, email: "tot@example.com", password: "password")
@@ -63,3 +65,9 @@ ItemOrder.create(item: chain, order: order_1, quantity: 1, price: 83)
 ItemOrder.create(item: maple, order: order_2, quantity: 1, price: 83)
 ItemOrder.create(item: wand, order: order_2, quantity: 1, price: 83)
 ItemOrder.create(item: meat, order: order_2, quantity: 1, price: 83)
+
+discount_1 = Discount.create!(quantity: 5, percentage: 0.1)
+discount_2 = Discount.create!(quantity: 10, percentage: 0.2)
+ItemDiscount.create(item: @pull_toy, discount: @discount_1)
+ItemDiscount.create(item: @pull_toy, discount: @discount_2)
+ItemDiscount.create(item: @dog_bone, discount: @discount_2)

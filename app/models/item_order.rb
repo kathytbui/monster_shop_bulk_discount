@@ -7,7 +7,17 @@ class ItemOrder <ApplicationRecord
   enum status: %w(pending packaged unfulfilled fulfilled shipped cancelled)
 
   def subtotal
-    price * quantity
+    item.price * quantity
+  end
+
+  def discounted_subtotal
+    discount = item.discounts.where('quantity <= ?', self.quantity).order(percentage: :desc).first
+    if discount.nil?
+      item.price * quantity
+    elsif
+      non_discount_items = quantity - discount.quantity
+      (discount.quantity * item.price * (1-discount.percentage)) + (item.price * non_discount_items)
+    end
   end
 
   private

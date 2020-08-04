@@ -10,6 +10,6 @@
   <h3><%= link_to "Order ID##{order.id}", "/merchant/orders/#{order.id}"%></h3>
   <p>Order placed at: <%= order.created_at %></p>
   <p>Total number of items: <%= @merchant.merch_quantity(order.id) %></p>
-  <p>Grand Total: <%= number_to_currency(@merchant.merch_total(order.id)) %></p><br>
+  <p>Grand Total: <%= number_to_currency(@merchant.merchant_item_orders_total(order.id)) %></p><br>
 <% end %>
 <center>

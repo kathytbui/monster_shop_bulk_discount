@@ -15,6 +15,8 @@ describe Item, type: :model do
     it {should have_many :reviews}
     it {should have_many :item_orders}
     it {should have_many(:orders).through(:item_orders)}
+    it {should have_many :item_discounts}
+    it {should have_many(:discounts).through(:item_discounts)}
   end
 
   describe "instance methods" do
@@ -46,6 +48,9 @@ describe Item, type: :model do
       @review_3 = @chain.reviews.create(title: "Meh place", content: "They have meh bike stuff and I probably won't come back", rating: 1)
       @review_4 = @chain.reviews.create(title: "Not too impressed", content: "v basic bike shop", rating: 2)
       @review_5 = @chain.reviews.create(title: "Okay place :/", content: "Brian's cool and all but just an okay selection of items", rating: 3)
+
+      @discount = Discount.create!(quantity: 5, percentage: 0.1)
+      @item_discount = ItemDiscount.create(item: @pull_toy, discount: @discount)
     end
 
     it "#collects active_items" do
@@ -102,6 +107,28 @@ describe Item, type: :model do
     it "update_inventory" do
       @pull_toy.update_inventory(1)
       expect(@pull_toy.inventory).to eq(31)
+    end
+
+    it "#discounted_price" do
+      discount = Discount.create(quantity: 5, percentage: 0.05)
+      i_d = ItemDiscount.create(item: @pull_toy, discount: discount)
+      expect(@pull_toy.discounted_price(i_d)).to eq(9.5)
+    end
+
+    it "#has_discount" do
+      expect(@pull_toy.has_discount?).to eq(true)
+    end
+
+    it "destroys all item discounts when item is destroyed" do
+      bike_shop = Merchant.create(name: "Brian's Bike Shop", address: '123 Bike Rd.', city: 'Denver', state: 'CO', zip: 80203)
+      pull_toy = bike_shop.items.create(name: "Pull Toy", description: "Great pull toy!", price: 10, image: "http://lovencaretoys.com/image/cache/dog/tug-toy-dog-pull-9010_2-800x800.jpg", inventory: 32)
+      user = User.create!(name: "Tanya", address: "145 Uvula dr", city: "Lake", state: "Michigan", zip: 80203, email: "t3@example.com", password: "password", role: 1, merchant: bike_shop)
+      allow_any_instance_of(ApplicationController).to receive(:user).and_return(user)
+      discount = Discount.create!(quantity: 5, percentage: 0.1)
+      item_discount = ItemDiscount.create(item: pull_toy, discount: discount)
+      expect(ItemDiscount.all.count).to eq(2)
+      pull_toy.destroy
+      expect(ItemDiscount.all.count).to eq(1)
     end
   end
 end

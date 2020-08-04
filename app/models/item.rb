@@ -1,8 +1,11 @@
  class Item <ApplicationRecord
+  before_destroy :destroy_item_discounts
   belongs_to :merchant
   has_many :reviews, dependent: :destroy
   has_many :item_orders
   has_many :orders, through: :item_orders
+  has_many :item_discounts
+  has_many :discounts, through: :item_discounts
 
   validates_presence_of :name,
                         :description,
@@ -52,5 +55,20 @@
 
   def activate
     self.update(active?: true)
+  end
+
+  def discounted_price(item_discount)
+    (1 - item_discount.discount.percentage) * price
+  end
+
+  def has_discount?
+    !item_discounts.empty?
+  end
+
+  private
+  def destroy_item_discounts
+    self.item_discounts.each do |id|
+      id.destroy
+    end
   end
 end

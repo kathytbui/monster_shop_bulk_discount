@@ -15,7 +15,7 @@ class Merchant::ItemsController < Merchant::BaseController
   def destroy
     item = Item.find(params[:item_id])
     if item.no_orders?
-      item.delete
+      item.destroy
       flash[:success] = "Item has been deleted"
     else
       flash[:error] = "Item has been ordered before and cannot be deleted"
