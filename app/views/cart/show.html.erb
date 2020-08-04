@@ -44,6 +44,11 @@
         <p><%=number_to_currency(cart.subtotal(item))%></p>
       </td>
       <td>
+        <p>
+          <% item.discounts.each do |d| %>
+            Buy <%= d.quantity %> to get <%= d.percentage * 100 %>% off first <%= d.quantity %> items<br>
+          <% end %>
+        </p>
         <p><%=number_to_currency(cart.discounted_subtotal(item))%></p>
       </td>
     </tr>

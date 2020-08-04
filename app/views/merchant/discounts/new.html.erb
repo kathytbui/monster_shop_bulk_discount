@@ -1,21 +1,26 @@
 <h1>Add Discount to Items</h1>
 
-<h3>Your Current Items:</h3>
-<% @items.each do |item| %>
-  <%= item.name %><br>
-  Original Price: <%= number_to_currency(item.price) %><br>
-  Current Inventory Amount: <%= item.inventory %><br>
-  <br>
-<% end %>
+<center>
+  <h3>Your Current Items:</h3>
 
-<%= form_tag "/merchant/discounts", method: :post do %>
-Select Items to Apply Discount To:
-<%= collection_check_boxes(:merchant, :item_id, @items, :id, :name) %><br>
-<br>
-<%= label_tag "Bulk Quantity Required For Discount (must be > 1)" %>
-<%= text_field_tag :quantity %>
-<%= label_tag "Discount Percentage (at least 0.01 to 0.99)" %>
-<%= text_field_tag :percentage %>
+  <p>
+    <% @items.each do |item| %>
+      <%= item.name %><br>
+      Original Price: <%= number_to_currency(item.price) %><br>
+      Current Inventory Amount: <%= item.inventory %><br>
+      <br>
+    <% end %>
+  </p>
 
-<%= submit_tag "Submit" %>
-<% end %>
+  <%= form_tag "/merchant/discounts", method: :post do %>
+  <h3>Select Items to Apply Discount To:</h3>
+    <p><%= collection_check_boxes(:merchant, :item_id, @items, :id, :name) %></p>
+    <%= label_tag "Bulk Quantity Required For Discount (must be > 1)" %>
+    <%= text_field_tag :quantity %>
+    <%= label_tag "Discount Percentage (at least 0.01 to 0.99)" %>
+    <%= text_field_tag :percentage %>
+
+    <%= submit_tag "Submit" %>
+  <% end %>
+
+  </center>

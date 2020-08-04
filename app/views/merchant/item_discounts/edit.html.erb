@@ -1,15 +1,21 @@
-Edit Discount
+<h1>Edit Discount</h1>
 
-Your Current Discount:
-<%= @item_discount.discount.percentage * 100 %>% Off
-For item: <%= @item_discount.item.name %>
+<center>
+  <h3>Your Current Discount:</h3>
 
-<%= form_tag "/merchant/item_discounts/#{@item_discount.id}", method: :patch do %>
-Discount will be applied to item above
-<%= label_tag "Bulk Quantity Required For Discount (must be > 1)" %>
-<%= text_field_tag :quantity, @item_discount.discount.quantity %>
-<%= label_tag "Discount Percentage (at least 0.01 to 0.99)" %>
-<%= text_field_tag :percentage, @item_discount.discount.percentage %>
+  <p>
+    <h4><%= @item_discount.item.name %></h4>
+    <%= @item_discount.discount.percentage * 100 %>% off when you buy <%= @item_discount.discount.quantity %>
+  </p>
 
-<%= submit_tag "Submit" %>
-<% end %>
+  <%= form_tag "/merchant/item_discounts/#{@item_discount.id}", method: :patch do %>
+    <h3>Discount will be applied to item above</h3>
+
+    <%= label_tag "Bulk Quantity Required For Discount (must be > 1)" %>
+    <%= text_field_tag :quantity, @item_discount.discount.quantity %>
+    <%= label_tag "Discount Percentage (at least 0.01 to 0.99)" %>
+    <%= text_field_tag :percentage, @item_discount.discount.percentage %>
+
+    <%= submit_tag "Submit" %>
+  <% end %>
+</center>
