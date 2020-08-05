@@ -20,10 +20,10 @@ RSpec.describe "Discount New Page" do
       expect(page).to_not have_content(@dog_bone.name)
       click_on "Add New Discount"
       expect(page).to have_content(@pull_toy.name)
-      expect(page).to have_content("Original Price: #{@pull_toy.price}")
+      expect(page).to have_content("Original Price: $#{@pull_toy.price}.00")
       expect(page).to have_content("Current Inventory Amount: #{@pull_toy.inventory}")
       expect(page).to have_content(@dog_bone.name)
-      expect(page).to have_content("Original Price: #{@dog_bone.price}")
+      expect(page).to have_content("Original Price: $#{@dog_bone.price}.00")
       expect(page).to have_content("Current Inventory Amount: #{@dog_bone.inventory}")
       check @pull_toy.name
       check @dog_bone.name
