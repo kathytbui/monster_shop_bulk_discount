@@ -1,6 +1,6 @@
 class Admin::ToggleItemsController < Admin::BaseController
   def update
-    item = Item.find(params[:item_id])
+    item = Item.find(params[:id])
     if item.active?
       item.deactivate
       flash[:success] = "Item is no longer for sale"

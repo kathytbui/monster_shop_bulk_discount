@@ -9,7 +9,7 @@
   <p>Name: <%= link_to order.name, "/admin/orders/#{order.id}" %></p>
   <p>Order Id: <%= order.id%></p>
   <p>Created At: <%= order.created_at %></p>
-  <%= link_to "Ship Order", "/admin/dashboard?id=#{order.id}", method: :patch %>
+  <%= link_to "Ship Order", "/admin/dashboard/#{order.id}", method: :patch %>
 <% end %>
 </section>
 

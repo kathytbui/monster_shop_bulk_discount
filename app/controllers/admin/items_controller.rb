@@ -23,11 +23,11 @@ class Admin::ItemsController < Admin::BaseController
   end
 
   def edit
-    @item = Item.find(params[:item_id])
+    @item = Item.find(params[:id])
   end
 
   def update
-    item = Item.find(params[:item_id])
+    item = Item.find(params[:id])
     if item.update(item_params)
       flash[:succes] = "Item has been updated"
       redirect_to "/admin/merchants/#{item.merchant.id}/items"
@@ -38,7 +38,7 @@ class Admin::ItemsController < Admin::BaseController
   end
 
   def destroy
-    item = Item.find(params[:item_id])
+    item = Item.find(params[:id])
     if item.no_orders?
       item.delete
       flash[:success] = "Item has been deleted"

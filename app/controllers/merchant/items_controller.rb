@@ -9,11 +9,11 @@ class Merchant::ItemsController < Merchant::BaseController
   end
 
   def show
-    @item = Item.find(params[:item_id])
+    @item = Item.find(params[:id])
   end
 
   def destroy
-    item = Item.find(params[:item_id])
+    item = Item.find(params[:id])
     if item.no_orders?
       item.destroy
       flash[:success] = "Item has been deleted"
@@ -36,11 +36,11 @@ class Merchant::ItemsController < Merchant::BaseController
   end
 
   def edit
-    @item = Item.find(params[:item_id])
+    @item = Item.find(params[:id])
   end
 
   def update
-    item = Item.find(params[:item_id])
+    item = Item.find(params[:id])
     if item.update(item_params)
       flash[:succes] = "Item has been updated"
       redirect_to "/merchant/items"

@@ -28,7 +28,7 @@ class OrdersController <ApplicationController
   end
 
   def update
-    order = Order.find(params[:order_id])
+    order = Order.find(params[:id])
     if order.item_orders.all? {|i_o| i_o. status == 'fulfilled'}
       order.update(status: 1)
     end
